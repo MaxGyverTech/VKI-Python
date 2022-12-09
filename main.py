@@ -1,51 +1,54 @@
 import pygame as pg
-import pygame.display
 
-x = 600
-y = 400
+# Ширина и высота экрана
+width = 600 
+height = 400
 
-background_image = pg.transform.scale(pg.image.load("64.jpg"), [x, y])
-screen = pg.display.set_mode((x, y))
+background_image = pg.transform.scale(pg.image.load("background.jpg"), [width, height]) # Фоновая картинка
+screen = pg.display.set_mode((width, height))  # Главный экран игры
 
 # Параметры красного шарика
-ySpeedOneBalls = 10
-xSpeedOneBalls = 10
-radiusBall = 30
-yOneBalls = 50
-xOneBalls = 50
+fisrtBallRadius = 30   # Радиус
+firstBallX = 50        # Позиция Х
+firstBallY = 50        # Позиция У
+firstBallSpeedX = 5    # Скорость по Х
+firstBallSpeedY = 5    # Скорость по У
 # Параметры зеленого шарики
-ySpeedGreenBalls = 10
-xSpeedGreenBalls = 10
-radiusGreenBall = 30
-xGreenBalls = (x/2) - (radiusBall/2)
-yGreenBalls = y -radiusGreenBall
+greenBallRadius = 30
+greenBallX = (width/2) - (fisrtBallRadius/2)
+greenBallY = height -greenBallRadius
+greenBallSpeedX = 5
+greenBallSpeedY = 5
 
-tick = pg.time.Clock()
-running = True
+clock = pg.time.Clock()
 
-while running:
-
-    screen.blit(background_image, (0, 0))
-    # Отрисовка шаров
-    pg.draw.circle(screen, (255, 0, 0), (xOneBalls, yOneBalls), radiusBall)
-    pg.draw.circle(screen, (0, 255, 0), (xGreenBalls, yGreenBalls), radiusBall)
+while 1:
+    for e in pg.event.get(): # Проверяем, решил ли пользователь выйти
+        if e.type == pg.QUIT: exit()
+        
     # Передвижение шаров
-    xOneBalls += xSpeedOneBalls
-    yOneBalls += ySpeedOneBalls
+    firstBallX += firstBallSpeedX
+    firstBallY += firstBallSpeedY
 
-    yGreenBalls += ySpeedGreenBalls
+    greenBallY += greenBallSpeedY
 
     # Проверка касание стен, отскок
-    if (xOneBalls <= 0 + radiusBall) or (xOneBalls > x - radiusBall):
-        xSpeedOneBalls = -xSpeedOneBalls
-    if (yOneBalls <= 0 + radiusBall) or (yOneBalls > y - radiusBall):
-        ySpeedOneBalls = -ySpeedOneBalls
+    if (firstBallX <= 0 + fisrtBallRadius) or (firstBallX > height - fisrtBallRadius):
+        firstBallSpeedX = -firstBallSpeedX
+    if (firstBallY <= 0 + fisrtBallRadius) or (firstBallY > width - fisrtBallRadius):
+        firstBallSpeedY = -firstBallSpeedY
 
-    if (yGreenBalls <= 0 + radiusBall) or (yGreenBalls > y - radiusBall):
-        ySpeedGreenBalls = -ySpeedGreenBalls
+    if (greenBallY <= 0 + fisrtBallRadius) or (greenBallY > height - fisrtBallRadius):
+        greenBallSpeedY = -greenBallSpeedY
 
-    pg.display.update()
-    tick.tick(15)
+    # Отображаем на экран фон
+    screen.blit(background_image, (0, 0))
+    # Отрисовка шаров
+    pg.draw.circle(screen, 'red', (firstBallY, firstBallX), fisrtBallRadius)
+    pg.draw.circle(screen, 'green', (greenBallX, greenBallY), fisrtBallRadius)
+
+    pg.display.update() # Обновляем экран
+    clock.tick(30) # Ждем следующего кадра
 
 '''
 Здания: 
